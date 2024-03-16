@@ -5,24 +5,39 @@
 # Напишите виртуальные методы поедания и определения состояния живого существа
 # (живой или нет, в зависимости от достижения предельного возраста и наличия еды (входной параметр)).
 class Living:
-    def __init__(self, age_limit):
-        self.age = 0
-        self.age_limit = age_limit
-        self.alive = True
+    def __init__(self, age_limit: int) -> None:
+        self.age: int = 0
+        self.age_limit: int = age_limit
+        self.alive: bool = True
 
-    def eat(self, food_type):
+    def eat(self, food_type: str) -> None:
+        """
+        get food for animal
+        :param food_type: str
+        :return: None
+        """
         pass
 
-    def is_alive(self, food):
+    def is_alive(self, food: str) -> None:
+        """
+        get animal is alive
+        :param food: str
+        :return: None
+        """
         if self.age >= self.age_limit or not food:
             self.alive = False
 
 
 class Fox(Living):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(age_limit=5)
 
-    def eat(self, food_type):
+    def eat(self, food_type: str) -> None:
+        """
+        get food for Fox
+        :param food_type: str
+        :return: None
+        """
         if food_type == "Rabbit":
             print("Fox eat Rabbit")
         else:
@@ -30,10 +45,15 @@ class Fox(Living):
 
 
 class Rabbit(Living):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(age_limit=3)
 
-    def eat(self, food_type):
+    def eat(self, food_type: str) -> None:
+        """
+        get food for Rabbit
+        :param food_type: str
+        :return: None
+        """
         if food_type == "Plant":
             print("Rabbit eat Plant")
         else:
@@ -41,10 +61,15 @@ class Rabbit(Living):
 
 
 class Plant(Living):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(age_limit=10)
 
-    def eat(self, food_type):
+    def eat(self, food_type: str) -> None:
+        """
+        get food for Plant
+        :param food_type: str
+        :return: None
+        """
         print("Plant absorbs sunlight")
 
 
