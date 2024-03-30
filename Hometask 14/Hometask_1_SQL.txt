@@ -1,0 +1,81 @@
+1.Создать таблицу с заданными ограничениями и полями. Заполнить данные 15 актёров.
+INSERT INTO actors(name, surname, age, movie_name, budget, manager, release_year, sex)
+VALUES
+("Arnold", "Schwarzenegger", 76, "Terminator", 10000000, "Cameron", 1984, "male"),
+("Arnold", "Schwarzenegger", 76, "Terminator 2", 20000000, "Cameron", 1991, "male"),
+("Arnold", "Schwarzenegger", 76, "Terminator 3", 30000000, "Mostow", 2003, "male"),
+("Arnold", "Schwarzenegger", 76, "Terminator Genisys", 40000000, "Taylor", 2015, "male"),
+("Tom", "Hanks", 67, "Cast Away", 10000000, "Zemeckis", 2000, "male"),
+("Tom", "Hanks", 67, "The Green Mile", 20000000, "Darabont", 1999, "male"),
+("Tom", "Hanks", 67, "Saving Private Ryan", 30000000, "Spielberg", 1998, "male"),
+("Tom", "Hanks", 67, "The Terminal", 40000000, "Spielberg", 2004, "male"),
+("Keanu", "Reeves", 59, "The Matrix", 20000000, "Wachowski", 1999, "male"),
+("Keanu", "Reeves", 59, "The Matrix Reloaded", 30000000, "Wachowski", 2003, "male"),
+("Keanu", "Reeves", 59, "The Matrix Revolutions", 40000000, "Wachowski", 2003, "male"),
+("Keanu", "Reeves", 59, "Speed", 10000000, "de Bont", 1994, "male"),
+("Sandra", "Bullock", 59, "Speed", 10000000, "de Bont", 1994, "female"),
+("Sandra", "Bullock", 59, "Gravity", 30000000, "Cuaron ", 2013, "female"),
+("Sandra", "Bullock", 59, "The Blind Side", 20000000, "Hancock", 2006, "female");
+
+2.Создать колонку fee REAL, заполнить значение гонораров за фильмы. 
+
+ALTER TABLE actors ADD COLUMN "fee" REAL
+UPDATE actors SET fee = 10000.1
+
+3.Переименовать колонку fee в fee_actors. Добавить колонку city, где проживают актёры в данный момент и внести все изменения в таблицу.
+
+ALTER TABLE actors
+RENAME COLUMN fee TO fee_actors
+ALTER TABLE actors ADD COLUMN "city" TEXT
+UPDATE actors SET city = "Los Angeles"
+WHERE name = "Arnold"
+UPDATE actors SET city = "New York"
+WHERE name = "Tom"
+UPDATE actors SET city = "Las Vegas"
+WHERE name = "Keanu"
+UPDATE actors SET city = "Washington"
+WHERE name = "Sandra"
+
+4.Вывести всех актёров которые снимались в период с 1990 по 2000 год. Актёры должны быть выведены только 1 раз.
+
+SELECT DISTINCT(name), surname FROM actors
+WHERE release_year BETWEEN 1990 AND 2000
+
+5.Вывести все фильмы в которых приняли участие 2 и более актёра из нашей базы данных. Вывод организовать в порядке возрастания фамилий!
+
+SELECT movie_name, name, surname
+FROM actors
+WHERE movie_name IN (
+SELECT movie_name
+FROM actors
+GROUP BY movie_name
+HAVING COUNT(*) >= 2)
+ORDER BY surname DESC;
+
+6.Вывести количество актёров мужского пола, которые есть в таблице которые старше 55 лет.
+
+SELECT count(age) AS "количество актеров"
+FROM actors
+WHERE age > 55 AND sex = "male"
+
+7.Вывести всех актёров которые приняли участие в 2-х и более фильмах, которые есть а бд и которые имеют на своём счету 10000000$.
+
+SELECT name, surname
+FROM actors
+GROUP BY name, surname
+HAVING COUNT(DISTINCT movie_name) >= 2 
+AND SUM(fee_actors) >= 10000000
+
+8.Вывести общую сумму всех гонораров актёров в фильмах снятых в период с 1995 по 2005 год.
+
+SELECT SUM(fee_actors) AS "сумма всех гонораров"
+FROM actors
+WHERE release_year BETWEEN 1995 AND 2005
+
+9.Вывести фильмы и имена и фамилии актёров, которым на момент выпуска фильма в прокат было меньше 35 лет.
+
+SELECT movie_name, name, surname 
+FROM actors
+WHERE age <= 35
+
+
